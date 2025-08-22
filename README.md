@@ -30,7 +30,7 @@ A modern, AI-powered travel planning web application built with React, TypeScrip
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - Airtable account and API key
 - OpenAI API key
@@ -52,19 +52,19 @@ A modern, AI-powered travel planning web application built with React, TypeScrip
    ```bash
    cp env.example .env.local
    ```
-   
+
    Edit `.env.local` and add your API keys:
    ```env
    # API Server Configuration
    PORT=3001
-   
+
    # Airtable Configuration
    AIRTABLE_API_KEY=your_airtable_api_key_here
    AIRTABLE_BASE_ID=your_airtable_base_id_here
-   
+
    # OpenAI Configuration
    OPENAI_API_KEY=your_openai_api_key_here
-   
+
    # Frontend Configuration
    VITE_API_BASE_URL=http://localhost:3001
    ```
@@ -73,11 +73,11 @@ A modern, AI-powered travel planning web application built with React, TypeScrip
    ```bash
    # Start both frontend and backend
    npm run dev:all
-   
+
    # Or start them separately:
    # Frontend only
    npm run dev
-   
+
    # Backend only
    npm run dev:server
    ```

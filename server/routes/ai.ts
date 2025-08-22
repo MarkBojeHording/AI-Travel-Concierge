@@ -1,12 +1,7 @@
 import { Router } from 'express';
-import OpenAI from 'openai';
+import { openai } from '../config/openai';
 
 const router = Router();
-
-// Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
 
 // POST /api/generateResponse
 router.post('/generateResponse', async (req, res) => {
@@ -52,7 +47,7 @@ router.post('/generateResponse', async (req, res) => {
 
   } catch (error) {
     console.error('❌ Error generating AI response:', error);
-    
+
     // Fallback responses for common travel queries
     const fallbackResponses = [
       "I'd love to help you plan your trip! Could you tell me more about your travel preferences and destination interests?",

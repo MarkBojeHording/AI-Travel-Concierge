@@ -55,7 +55,7 @@ const ChatWidget = () => {
     try {
       // Generate AI response
       const response = await apiClient.generateResponse(inputMessage);
-      
+
       // Remove loading message and add real response
       setMessages(prev => prev.filter(msg => !msg.isLoading).concat({
         id: (Date.now() + 2).toString(),
@@ -66,7 +66,7 @@ const ChatWidget = () => {
 
     } catch (error) {
       console.error('Failed to generate response:', error);
-      
+
       // Remove loading message and add error response
       setMessages(prev => prev.filter(msg => !msg.isLoading).concat({
         id: (Date.now() + 2).toString(),
@@ -123,8 +123,8 @@ const ChatWidget = () => {
                   message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
                 }`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    message.sender === 'user' 
-                      ? 'bg-gradient-sunset' 
+                    message.sender === 'user'
+                      ? 'bg-gradient-sunset'
                       : 'bg-gradient-tropical'
                   }`}>
                     {message.sender === 'user' ? (

@@ -1,12 +1,7 @@
 import { Router } from 'express';
-import Airtable from 'airtable';
+import { base } from '../config/airtable';
 
 const router = Router();
-
-// Initialize Airtable
-const base = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY
-}).base(process.env.AIRTABLE_BASE_ID || '');
 
 interface Destination {
   id: string;
@@ -24,7 +19,7 @@ interface Destination {
 router.get('/fetchDestinations', async (req, res) => {
   try {
     console.log('📡 Fetching destinations from Airtable...');
-    
+
     const records = await base('Destinations').select({
       view: 'Grid view'
     }).all();
@@ -42,7 +37,7 @@ router.get('/fetchDestinations', async (req, res) => {
     }));
 
     console.log(`✅ Successfully fetched ${destinations.length} destinations`);
-    
+
     res.json({
       success: true,
       data: destinations,
@@ -51,7 +46,7 @@ router.get('/fetchDestinations', async (req, res) => {
 
   } catch (error) {
     console.error('❌ Error fetching destinations:', error);
-    
+
     // Return mock data as fallback
     const mockDestinations: Destination[] = [
       {
