@@ -2,13 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { MessageCircle, Mic, Send, X, Bot, User } from "lucide-react";
+import { MessageCircle, Mic, Send, X, Bot, User, Loader2 } from "lucide-react";
+import { apiClient } from "@/lib/api";
 
 interface Message {
   id: string;
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+  isLoading?: boolean;
 }
 
 const ChatWidget = () => {
@@ -23,9 +25,10 @@ const ChatWidget = () => {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleSendMessage = () => {
-    if (!inputMessage.trim()) return;
+  const handleSendMessage = async () => {
+    if (!inputMessage.trim() || isGenerating) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -36,17 +39,44 @@ const ChatWidget = () => {
 
     setMessages(prev => [...prev, userMessage]);
     setInputMessage("");
+    setIsGenerating(true);
 
-    // Simulate bot response
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: "I'd love to help you with that! Let me find some amazing recommendations for you.",
+    // Add loading message
+    const loadingMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      text: "",
+      sender: 'bot',
+      timestamp: new Date(),
+      isLoading: true
+    };
+
+    setMessages(prev => [...prev, loadingMessage]);
+
+    try {
+      // Generate AI response
+      const response = await apiClient.generateResponse(inputMessage);
+      
+      // Remove loading message and add real response
+      setMessages(prev => prev.filter(msg => !msg.isLoading).concat({
+        id: (Date.now() + 2).toString(),
+        text: response,
         sender: 'bot',
         timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
-    }, 1000);
+      }));
+
+    } catch (error) {
+      console.error('Failed to generate response:', error);
+      
+      // Remove loading message and add error response
+      setMessages(prev => prev.filter(msg => !msg.isLoading).concat({
+        id: (Date.now() + 2).toString(),
+        text: "I apologize, but I'm having trouble connecting right now. Please try again in a moment.",
+        sender: 'bot',
+        timestamp: new Date()
+      }));
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleVoiceInput = () => {
@@ -108,7 +138,14 @@ const ChatWidget = () => {
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-muted-foreground'
                   }`}>
-                    <p className="text-sm">{message.text}</p>
+                    {message.isLoading ? (
+                      <div className="flex items-center space-x-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span className="text-sm">Thinking...</span>
+                      </div>
+                    ) : (
+                      <p className="text-sm">{message.text}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -137,8 +174,13 @@ const ChatWidget = () => {
                 onClick={handleSendMessage}
                 size="icon"
                 className="bg-gradient-ocean"
+                disabled={isGenerating}
               >
-                <Send className="w-4 h-4" />
+                {isGenerating ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
               </Button>
             </div>
           </div>
