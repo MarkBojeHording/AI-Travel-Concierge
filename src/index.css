@@ -2,39 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Travel Concierge Design System - Beautiful gradients and travel-inspired colors */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base colors - Ocean and sky inspired */
+    --background: 220 26% 97%;
+    --foreground: 215 25% 15%;
 
+    /* Travel-themed primary colors */
+    --primary: 207 90% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 207 90% 65%;
+
+    /* Ocean sunset gradients */
+    --secondary: 25 95% 65%;
+    --secondary-foreground: 215 25% 15%;
+    --secondary-glow: 25 95% 75%;
+
+    /* Accent colors - Tropical */
+    --accent: 165 60% 45%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 165 60% 65%;
+
+    /* Card and surfaces */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 25% 15%;
+    --card-gradient: 220 26% 97%, 220 26% 99%;
 
+    /* Muted tones */
+    --muted: 220 20% 94%;
+    --muted-foreground: 215 15% 45%;
+
+    /* Interactive elements */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 25% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --border: 220 15% 88%;
+    --input: 220 15% 92%;
+    --ring: 207 90% 45%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Travel-specific gradients */
+    --gradient-ocean: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-sunset: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--primary)));
+    --gradient-tropical: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--secondary)));
+    --gradient-hero: linear-gradient(135deg, hsl(207 90% 45% / 0.9), hsl(25 95% 65% / 0.8));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card-gradient)));
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Shadows with travel theme */
+    --shadow-ocean: 0 10px 40px hsl(var(--primary) / 0.15);
+    --shadow-tropical: 0 8px 30px hsl(var(--accent) / 0.2);
+    --shadow-card: 0 4px 20px hsl(215 25% 15% / 0.08);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Animation variables */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --radius: 0.5rem;
 
@@ -101,5 +127,97 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Travel-themed component styles */
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+  
+  .ocean-gradient {
+    background: var(--gradient-ocean);
+  }
+  
+  .sunset-gradient {
+    background: var(--gradient-sunset);
+  }
+  
+  .tropical-gradient {
+    background: var(--gradient-tropical);
+  }
+  
+  .card-gradient {
+    background: var(--gradient-card);
+  }
+  
+  .shadow-ocean {
+    box-shadow: var(--shadow-ocean);
+  }
+  
+  .shadow-tropical {
+    box-shadow: var(--shadow-tropical);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Travel card hover effects */
+  .travel-card {
+    @apply relative overflow-hidden rounded-xl bg-card shadow-card transition-smooth hover:shadow-ocean hover:-translate-y-2;
+  }
+  
+  .travel-card::before {
+    @apply absolute inset-0 opacity-0 transition-smooth;
+    content: '';
+    background: var(--gradient-ocean);
+    z-index: -1;
+  }
+  
+  .travel-card:hover::before {
+    @apply opacity-10;
+  }
+
+  /* Masonry grid */
+  .masonry {
+    column-count: 1;
+    column-gap: 1.5rem;
+    @apply space-y-6;
+  }
+  
+  @media (min-width: 640px) {
+    .masonry {
+      column-count: 2;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .masonry {
+      column-count: 3;
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .masonry {
+      column-count: 4;
+    }
+  }
+  
+  .masonry-item {
+    @apply break-inside-avoid mb-6;
   }
 }
