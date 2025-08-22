@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Star, Clock, Share2, Heart } from "lucide-react";
 import { useState } from "react";
+import SocialShare from "./SocialShare";
+import WeatherWidget from "./WeatherWidget";
 
 interface RecommendationCardProps {
   id: string;
@@ -27,6 +29,7 @@ const RecommendationCard = ({
   category
 }: RecommendationCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
+  const [showShare, setShowShare] = useState(false);
 
   return (
     <Card className="travel-card masonry-item group cursor-pointer">
@@ -56,6 +59,10 @@ const RecommendationCard = ({
             size="icon"
             variant="outline"
             className="w-8 h-8 bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowShare(!showShare);
+            }}
           >
             <Share2 className="w-4 h-4 text-gray-600" />
           </Button>
@@ -99,6 +106,21 @@ const RecommendationCard = ({
             {price}
           </div>
         </div>
+
+        {/* Weather Widget */}
+        <WeatherWidget location={location} className="mb-4" />
+
+        {/* Social Share */}
+        {showShare && (
+          <div className="mb-4 p-3 bg-muted rounded-lg">
+            <SocialShare 
+              title={title}
+              description={description}
+              url={`${window.location.origin}/destination/${title.toLowerCase().replace(/\s+/g, '-')}`}
+              image={image}
+            />
+          </div>
+        )}
 
         {/* Actions */}
         <div className="flex space-x-3">

@@ -1,8 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { MapPin, Plane, Compass } from "lucide-react";
-import heroImage from "@/assets/hero-travel.jpg";
+import { MapPin, Plane, Compass, ArrowDown } from "lucide-react";
+import heroImage from "@/assets/hero-paradise.jpg";
 
 const HeroSection = () => {
+  const scrollToTravelConcierge = () => {
+    const element = document.getElementById('travel-concierge');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -54,9 +61,10 @@ const HeroSection = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button 
             size="lg" 
+            onClick={scrollToTravelConcierge}
             className="hero-btn px-12 py-6 text-lg font-semibold bg-gradient-ocean hover:shadow-glow transition-bounce"
           >
-            Start Exploring
+            Explore Your Next Adventure
           </Button>
           <Button 
             variant="outline" 
@@ -87,10 +95,11 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse" />
-        </div>
+      <div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+        onClick={scrollToTravelConcierge}
+      >
+        <ArrowDown className="w-6 h-6 text-white/70" />
       </div>
     </section>
   );
