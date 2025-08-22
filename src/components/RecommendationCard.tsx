@@ -2,9 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Star, Clock, Share2, Heart } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 import SocialShare from "./SocialShare";
-import WeatherWidget from "./WeatherWidget";
 
 interface RecommendationCardProps {
   id: string;
@@ -18,7 +17,7 @@ interface RecommendationCardProps {
   category: string;
 }
 
-const RecommendationCard = ({
+const RecommendationCard = memo(({
   title,
   location,
   description,
@@ -35,23 +34,23 @@ const RecommendationCard = ({
     <Card className="travel-card masonry-item group cursor-pointer">
       {/* Image */}
       <div className="relative overflow-hidden rounded-t-xl">
-        <img 
-          src={image} 
+        <img
+          src={image}
           alt={title}
           className="w-full h-48 object-cover transition-smooth group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-smooth" />
-        
+
         {/* Floating Actions */}
         <div className="absolute top-4 right-4 flex space-x-2 opacity-0 group-hover:opacity-100 transition-smooth">
           <Button
             size="icon"
             variant="outline"
             className="w-8 h-8 bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
-            onClick={(e) => {
+            onClick={useCallback((e) => {
               e.stopPropagation();
               setIsLiked(!isLiked);
-            }}
+            }, [isLiked])}
           >
             <Heart className={`w-4 h-4 ${isLiked ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
           </Button>
@@ -59,10 +58,10 @@ const RecommendationCard = ({
             size="icon"
             variant="outline"
             className="w-8 h-8 bg-white/90 backdrop-blur-sm border-white/20 hover:bg-white"
-            onClick={(e) => {
+            onClick={useCallback((e) => {
               e.stopPropagation();
               setShowShare(!showShare);
-            }}
+            }, [showShare])}
           >
             <Share2 className="w-4 h-4 text-gray-600" />
           </Button>
@@ -107,13 +106,10 @@ const RecommendationCard = ({
           </div>
         </div>
 
-        {/* Weather Widget */}
-        <WeatherWidget location={location} className="mb-4" />
-
         {/* Social Share */}
         {showShare && (
           <div className="mb-4 p-3 bg-muted rounded-lg">
-            <SocialShare 
+            <SocialShare
               title={title}
               description={description}
               url={`${window.location.origin}/destination/${title.toLowerCase().replace(/\s+/g, '-')}`}
@@ -124,13 +120,13 @@ const RecommendationCard = ({
 
         {/* Actions */}
         <div className="flex space-x-3">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="flex-1 transition-bounce hover:shadow-card"
           >
             Learn More
           </Button>
-          <Button 
+          <Button
             className="flex-1 bg-gradient-ocean transition-bounce hover:shadow-ocean"
           >
             Book Now
@@ -139,6 +135,6 @@ const RecommendationCard = ({
       </div>
     </Card>
   );
-};
+});
 
 export default RecommendationCard;

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Facebook, Twitter, Instagram, Link2, Mail } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback, memo } from "react";
 
 interface SocialShareProps {
   title: string;
@@ -9,7 +9,7 @@ interface SocialShareProps {
   image?: string;
 }
 
-const SocialShare = ({ title, description, url = window.location.href, image }: SocialShareProps) => {
+const SocialShare = memo(({ title, description, url = window.location.href, image }: SocialShareProps) => {
   const [copied, setCopied] = useState(false);
 
   const shareData = {
@@ -18,7 +18,7 @@ const SocialShare = ({ title, description, url = window.location.href, image }: 
     url
   };
 
-  const handleShare = async (platform: string) => {
+  const handleShare = useCallback(async (platform: string) => {
     const encodedTitle = encodeURIComponent(title);
     const encodedDescription = encodeURIComponent(description || `Check out this amazing travel destination: ${title}`);
     const encodedUrl = encodeURIComponent(url);
@@ -58,12 +58,12 @@ const SocialShare = ({ title, description, url = window.location.href, image }: 
     if (shareUrl) {
       window.open(shareUrl, '_blank', 'width=600,height=400');
     }
-  };
+  }, [title, description, url]);
 
   return (
     <div className="flex items-center space-x-2">
       <span className="text-sm text-muted-foreground mr-2">Share:</span>
-      
+
       <Button
         size="icon"
         variant="outline"
@@ -72,7 +72,7 @@ const SocialShare = ({ title, description, url = window.location.href, image }: 
       >
         <Facebook className="w-4 h-4" />
       </Button>
-      
+
       <Button
         size="icon"
         variant="outline"
@@ -81,7 +81,7 @@ const SocialShare = ({ title, description, url = window.location.href, image }: 
       >
         <Twitter className="w-4 h-4" />
       </Button>
-      
+
       <Button
         size="icon"
         variant="outline"
@@ -90,7 +90,7 @@ const SocialShare = ({ title, description, url = window.location.href, image }: 
       >
         <Mail className="w-4 h-4" />
       </Button>
-      
+
       <Button
         size="icon"
         variant="outline"
@@ -99,13 +99,13 @@ const SocialShare = ({ title, description, url = window.location.href, image }: 
       >
         <Link2 className="w-4 h-4" />
       </Button>
-      
+
       {copied && (
         <span className="text-xs text-accent font-medium animate-fade-in">
           Copied!
         </span>
       )}
-      
+
       {navigator.share && (
         <Button
           size="sm"
@@ -118,6 +118,6 @@ const SocialShare = ({ title, description, url = window.location.href, image }: 
       )}
     </div>
   );
-};
+});
 
 export default SocialShare;

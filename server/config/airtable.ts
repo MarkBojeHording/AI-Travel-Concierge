@@ -3,15 +3,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const airtableAccessToken = process.env.AIRTABLE_API_KEY;
-const airtableBaseId = process.env.AIRTABLE_BASE_ID;
+const airtableAccessToken = process.env.NEXT_PUBLIC_AIRTABLE_ACCESS_TOKEN;
+const airtableBaseId = process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID;
 
 if (!airtableAccessToken) {
-  throw new Error('AIRTABLE_API_KEY environment variable is required.');
+  throw new Error('NEXT_PUBLIC_AIRTABLE_ACCESS_TOKEN environment variable is required.');
 }
 
 if (!airtableBaseId) {
-  throw new Error('AIRTABLE_BASE_ID environment variable is required.');
+  throw new Error('NEXT_PUBLIC_AIRTABLE_BASE_ID environment variable is required.');
 }
 
 // Configure Airtable with the access token

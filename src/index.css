@@ -135,59 +135,66 @@
   .hero-gradient {
     background: var(--gradient-hero);
   }
-  
+
   .ocean-gradient {
     background: var(--gradient-ocean);
   }
-  
+
   .sunset-gradient {
     background: var(--gradient-sunset);
   }
-  
+
   .tropical-gradient {
     background: var(--gradient-tropical);
   }
-  
+
   .card-gradient {
     background: var(--gradient-card);
   }
-  
+
   .shadow-ocean {
     box-shadow: var(--shadow-ocean);
   }
-  
+
   .shadow-tropical {
     box-shadow: var(--shadow-tropical);
   }
-  
+
   .shadow-card {
     box-shadow: var(--shadow-card);
   }
-  
+
   .shadow-glow {
     box-shadow: var(--shadow-glow);
   }
-  
+
   .transition-smooth {
     transition: var(--transition-smooth);
   }
-  
+
   .transition-bounce {
     transition: var(--transition-bounce);
   }
 
   /* Travel card hover effects */
   .travel-card {
-    @apply relative overflow-hidden rounded-xl bg-card shadow-card transition-smooth hover:shadow-ocean hover:-translate-y-2;
+    @apply relative overflow-hidden rounded-xl bg-card shadow-card transition-smooth;
+    transform: translateZ(0); /* Force hardware acceleration */
+    will-change: transform, box-shadow; /* Optimize for animations */
   }
-  
+
+  .travel-card:hover {
+    @apply shadow-ocean;
+    transform: translateZ(0) translateY(-0.5rem); /* Reduced translateY to prevent layout shifts */
+  }
+
   .travel-card::before {
     @apply absolute inset-0 opacity-0 transition-smooth;
     content: '';
     background: var(--gradient-ocean);
     z-index: -1;
   }
-  
+
   .travel-card:hover::before {
     @apply opacity-10;
   }
@@ -196,28 +203,29 @@
   .masonry {
     column-count: 1;
     column-gap: 1.5rem;
-    @apply space-y-6;
+    column-fill: balance;
   }
-  
+
   @media (min-width: 640px) {
     .masonry {
       column-count: 2;
     }
   }
-  
+
   @media (min-width: 1024px) {
     .masonry {
       column-count: 3;
     }
   }
-  
+
   @media (min-width: 1280px) {
     .masonry {
       column-count: 4;
     }
   }
-  
+
   .masonry-item {
     @apply break-inside-avoid mb-6;
+    transform: translateZ(0); /* Force hardware acceleration */
   }
 }

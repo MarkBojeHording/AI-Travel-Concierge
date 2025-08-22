@@ -5,8 +5,7 @@ export const useDestinations = () => {
   return useQuery({
     queryKey: ['destinations'],
     queryFn: () => apiClient.fetchDestinations(),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 2,
+    // Use global defaults, no need to override here
   });
 };
 
@@ -18,7 +17,6 @@ export const useDestinationsByCategory = (category?: string) => {
       if (!category) return destinations;
       return destinations.filter(dest => dest.category === category);
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 2,
+    // Use global defaults, no need to override here
   });
 };

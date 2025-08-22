@@ -9,8 +9,8 @@ dotenv.config({ path: path.join(__dirname, '../../.env.local') });
 console.log('🔍 Validating AI Travel Concierge Configuration...\n');
 
 const requiredVars = [
-  'AIRTABLE_API_KEY',
-  'AIRTABLE_BASE_ID',
+  'NEXT_PUBLIC_AIRTABLE_ACCESS_TOKEN',
+  'NEXT_PUBLIC_AIRTABLE_BASE_ID',
   'OPENAI_API_KEY'
 ];
 
@@ -38,11 +38,13 @@ if (missingVars.length > 0) {
   });
 
   console.log('\n📝 Setup Instructions:');
-  console.log('1. Copy env.example to .env.local:');
-  console.log('   cp env.example .env.local');
-  console.log('\n2. Edit .env.local and add your API keys:');
-  console.log('   - Get Airtable API key from: https://airtable.com/account');
-  console.log('   - Get OpenAI API key from: https://platform.openai.com/api-keys');
+  console.log('1. Make sure your .env file contains:');
+  console.log('   - NEXT_PUBLIC_AIRTABLE_ACCESS_TOKEN');
+  console.log('   - NEXT_PUBLIC_AIRTABLE_BASE_ID');
+  console.log('   - OPENAI_API_KEY');
+  console.log('\n2. Get your API keys from:');
+  console.log('   - Airtable API key: https://airtable.com/account');
+  console.log('   - OpenAI API key: https://platform.openai.com/api-keys');
   console.log('\n3. For Airtable Base ID:');
   console.log('   - Open your Airtable base');
   console.log('   - Look at the URL: https://airtable.com/appXXXXXXXXXXXXXX/...');

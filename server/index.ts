@@ -13,23 +13,23 @@ try {
   // Test Airtable configuration
   const { airtableConfig } = await import('./config/airtable.js');
   console.log('✅ Airtable configuration loaded:', airtableConfig);
-  
+
   // Test OpenAI configuration
   const { openaiConfig } = await import('./config/openai.js');
   console.log('✅ OpenAI configuration loaded:', openaiConfig);
-  
+
   // Import routes after successful configuration
   const destinationsModule = await import('./routes/destinations.js');
   const aiModule = await import('./routes/ai.js');
-  
+
   fetchDestinations = destinationsModule.fetchDestinations;
   generateResponse = aiModule.generateResponse;
-  
+
 } catch (error) {
   console.error('❌ Configuration error:', error.message);
   console.log('📝 Please check your environment variables:');
-  console.log('   - AIRTABLE_API_KEY');
-  console.log('   - AIRTABLE_BASE_ID');
+  console.log('   - NEXT_PUBLIC_AIRTABLE_ACCESS_TOKEN');
+  console.log('   - NEXT_PUBLIC_AIRTABLE_BASE_ID');
   console.log('   - OPENAI_API_KEY');
   process.exit(1);
 }
@@ -65,7 +65,7 @@ app.get('/config', async (req, res) => {
   try {
     const { airtableConfig } = await import('./config/airtable.js');
     const { openaiConfig } = await import('./config/openai.js');
-    
+
     res.json({
       airtable: airtableConfig,
       openai: openaiConfig,

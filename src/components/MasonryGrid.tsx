@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useDestinations } from "@/hooks/useDestinations";
 import RecommendationCard from "./RecommendationCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -23,15 +23,17 @@ const MasonryGrid = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const { data: destinations = [], isLoading, error, refetch } = useDestinations();
 
-  const categories = ['all', 'Adventure', 'Cultural', 'Luxury', 'Nature', 'Scenic'];
+  const categories = useMemo(() => ['all', 'Adventure', 'Cultural', 'Luxury', 'Nature', 'Scenic'], []);
 
-  const filteredDestinations = selectedCategory === 'all'
-    ? destinations
-    : destinations.filter(dest => dest.category === selectedCategory);
+  const filteredDestinations = useMemo(() => {
+    return selectedCategory === 'all'
+      ? destinations
+      : destinations.filter(dest => dest.category === selectedCategory);
+  }, [destinations, selectedCategory]);
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = useCallback((category: string) => {
     setSelectedCategory(category);
-  };
+  }, []);
 
   // Loading state
   if (isLoading) {
@@ -111,7 +113,7 @@ const MasonryGrid = () => {
         <div className="masonry">
           {filteredDestinations.map((destination) => (
             <RecommendationCard
-              key={destination.id}
+              key={`${destination.id}-${destination.name}`}
               {...destination}
               title={destination.name} // Map name to title for compatibility
             />
