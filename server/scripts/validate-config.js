@@ -10,7 +10,7 @@ console.log('🔍 Validating AI Travel Concierge Configuration...\n');
 
 const requiredVars = [
   'AIRTABLE_API_KEY',
-  'AIRTABLE_BASE_ID', 
+  'AIRTABLE_BASE_ID',
   'OPENAI_API_KEY'
 ];
 
@@ -36,7 +36,7 @@ if (missingVars.length > 0) {
   missingVars.forEach(varName => {
     console.log(`   ${varName}: ✗ Missing`);
   });
-  
+
   console.log('\n📝 Setup Instructions:');
   console.log('1. Copy env.example to .env.local:');
   console.log('   cp env.example .env.local');
@@ -47,7 +47,7 @@ if (missingVars.length > 0) {
   console.log('   - Open your Airtable base');
   console.log('   - Look at the URL: https://airtable.com/appXXXXXXXXXXXXXX/...');
   console.log('   - The Base ID is the "appXXXXXXXXXXXXXX" part');
-  
+
   process.exit(1);
 } else {
   console.log('\n🎉 All environment variables are configured!');

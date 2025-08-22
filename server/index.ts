@@ -11,16 +11,16 @@ let generateResponse: any;
 
 try {
   // Test Airtable configuration
-  const { airtableConfig } = require('./config/airtable');
+  const { airtableConfig } = await import('./config/airtable.js');
   console.log('✅ Airtable configuration loaded:', airtableConfig);
   
   // Test OpenAI configuration
-  const { openaiConfig } = require('./config/openai');
+  const { openaiConfig } = await import('./config/openai.js');
   console.log('✅ OpenAI configuration loaded:', openaiConfig);
   
   // Import routes after successful configuration
-  const destinationsModule = require('./routes/destinations');
-  const aiModule = require('./routes/ai');
+  const destinationsModule = await import('./routes/destinations.js');
+  const aiModule = await import('./routes/ai.js');
   
   fetchDestinations = destinationsModule.fetchDestinations;
   generateResponse = aiModule.generateResponse;
@@ -41,14 +41,17 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Wrap the async initialization
+const initializeServer = async () => {
+
 // API Routes
 app.use('/api', fetchDestinations);
 app.use('/api', generateResponse);
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     timestamp: new Date().toISOString(),
     services: {
       airtable: 'configured',
@@ -58,10 +61,10 @@ app.get('/health', (req, res) => {
 });
 
 // Configuration check endpoint
-app.get('/config', (req, res) => {
+app.get('/config', async (req, res) => {
   try {
-    const { airtableConfig } = require('./config/airtable');
-    const { openaiConfig } = require('./config/openai');
+    const { airtableConfig } = await import('./config/airtable.js');
+    const { openaiConfig } = await import('./config/openai.js');
     
     res.json({
       airtable: airtableConfig,
@@ -79,4 +82,11 @@ app.get('/config', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 API Server running on port ${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
+});
+};
+
+// Start the server
+initializeServer().catch((error) => {
+  console.error('Failed to initialize server:', error);
+  process.exit(1);
 });
